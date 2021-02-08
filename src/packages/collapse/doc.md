@@ -1,11 +1,18 @@
 # Collapse 折叠面板
 
+> 按需加载方法
+
+``` javascript
+import { Collapse, CollapseItem } from '@nutui/nutui';
+Collapse.install(Vue);
+CollapseItem.install(Vue);
+```
 ## 基本用法
 
 通过`v-model`控制展开的面板列表，`activeNames`为数组格式
 
 ```html
-<nut-collapse v-model="activeNames">
+<nut-collapse v-model="activeNames" @change="callback">
     <nut-collapse-item title="标题1" :name="1">
         京东“厂直优品计划”首推“政府优品馆” 3年覆盖80%镇级政府 
     </nut-collapse-item>
@@ -23,6 +30,11 @@ export default {
     return {
         activeNames: [1, 2]
     };
+  },
+  methods: {
+    callback(name) {
+      console.log(`点击了name是${name}的面板,callback`);
+    }
   }
 };
 ```
@@ -98,7 +110,9 @@ export default {
 
 | 事件名 | 说明 | 回调参数 |
 |------|------|------|
-| change | 切换面板时触发 | 类型与 v-model 绑定的值一致 |
+| change | 切换面板时触发 | 类型与 v-model 绑定的值一致。 |
+
+> 使用 @change = "function" 回调。如果未使用，会直接触发 methods 中定义的 change 方法，如不需要回调，尽量不要在 methods 中定义 change 方法
 
 ### CollapseItem Props
 | 参数 | 说明 | 类型 | 默认值 | 
@@ -109,3 +123,5 @@ export default {
 | sub-title | 标题栏副标题 | string | - |
 | icon | 标题栏自定义图标链接 | string | - |
 | rotate | 点击折叠和展开的旋转角度,在自定义图标模式下生效 | string \ number | 180 |
+
+> 说明：使用折叠面板组件，请保证 NutUI 的版本在 V2.2.11 及以上

@@ -68,6 +68,9 @@ export default {
       this.chooseValueData = [...this.defaultValueData];
       this.cacheValueData = [...this.defaultValueData];
       this.$emit('confirm', this.cacheValueData);
+    },
+    listData: function() {
+      this.init();
     }
   },
   methods: {
@@ -89,24 +92,27 @@ export default {
       this.chooseValueData = [...this.cacheValueData];
       this.$emit('close');
     },
-
     chooseItem(value, index) {
       if (this.cacheValueData[index] !== value) {
         this.cacheValueData[index] = value;
         this.$emit('choose', this, index, value, this.cacheValueData);
       }
+    },
+    init() {
+      if (this.defaultValueData && this.defaultValueData.length) {
+        this.chooseValueData = [...this.defaultValueData];
+      } else {
+        let defaultValueData = [];
+        this.listData.map((item, index) => {
+          defaultValueData.push(item[0]);
+        });
+        this.chooseValueData = [...defaultValueData];
+      }
     }
   },
+
   created() {
-    if (this.defaultValueData && this.defaultValueData.length) {
-      this.chooseValueData = [...this.defaultValueData];
-    } else {
-      let defaultValueData = [];
-      this.listData.map((item, index) => {
-        defaultValueData.push(item[0]);
-      });
-      this.chooseValueData = [...defaultValueData];
-    }
+    this.init();
   }
 };
 </script>
